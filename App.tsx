@@ -1,118 +1,131 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {useState, useEffect} from 'react';
+import {Text, StyleSheet, View, ScrollView} from 'react-native';
+import {RenderProgressBar} from './components';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+type ProgressState = {
+  yearProgress: number;
+  monthProgress: number;
+  dayProgress: number;
+  yearRemaining: number;
+  monthRemaining: number;
+  dayRemaining: number;
+};
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default function App() {
+  const [state, setState] = useState<ProgressState>({
+    yearProgress: 0,
+    monthProgress: 0,
+    dayProgress: 0,
+    yearRemaining: 0,
+    monthRemaining: 0,
+    dayRemaining: 0,
+  });
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  useEffect(() => {
+    const updateProgress = () => {
+      const now = new Date();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+      // Year calculations
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      const startOfNextYear = new Date(now.getFullYear() + 1, 0, 1);
+      const totalYearDays =
+        (startOfNextYear.getTime() - startOfYear.getTime()) /
+        (1000 * 60 * 60 * 24);
+      const daysRemainingInYear =
+        totalYearDays -
+        (now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24);
+      const yearProgress =
+        ((now.getTime() - startOfYear.getTime()) /
+          (startOfNextYear.getTime() - startOfYear.getTime())) *
+        100;
+
+      // Month calculations
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const startOfNextMonth = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        1,
+      );
+      const totalMonthDays =
+        (startOfNextMonth.getTime() - startOfMonth.getTime()) /
+        (1000 * 60 * 60 * 24);
+      const daysRemainingInMonth =
+        totalMonthDays -
+        (now.getTime() - startOfMonth.getTime()) / (1000 * 60 * 60 * 24);
+      const monthProgress =
+        ((now.getTime() - startOfMonth.getTime()) /
+          (startOfNextMonth.getTime() - startOfMonth.getTime())) *
+        100;
+
+      // Day calculations
+      const startOfDay = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+      );
+      const startOfNextDay = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+      );
+      const totalDayHours = 24;
+      const hoursRemainingInDay =
+        totalDayHours -
+        (now.getTime() - startOfDay.getTime()) / (1000 * 60 * 60);
+      const dayProgress =
+        ((now.getTime() - startOfDay.getTime()) /
+          (startOfNextDay.getTime() - startOfDay.getTime())) *
+        100;
+
+      // Update state
+      setState({
+        yearProgress,
+        monthProgress,
+        dayProgress,
+        yearRemaining: Math.ceil(daysRemainingInYear),
+        monthRemaining: Math.ceil(daysRemainingInMonth),
+        dayRemaining: Math.ceil(hoursRemainingInDay),
+      });
+    };
+
+    updateProgress();
+    const interval = setInterval(updateProgress, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <ScrollView contentContainerStyle={styles.container}>
+      {/* year */}
+      <RenderProgressBar
+        remaining={state.yearRemaining}
+        label="Year"
+        progress={state.yearProgress}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+
+      {/* month */}
+      <RenderProgressBar
+        remaining={state.monthRemaining}
+        label="Month"
+        progress={state.monthProgress}
+      />
+
+      {/* day  */}
+      <RenderProgressBar
+        remaining={state.dayRemaining}
+        label="Day"
+        progress={state.dayProgress}
+      />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 30,
+    backgroundColor: 'black',
+    flexDirection: 'column',
+    gap: 40,
   },
 });
-
-export default App;
