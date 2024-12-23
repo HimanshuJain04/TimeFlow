@@ -1,19 +1,207 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.Timer.AppWidget.Container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:theme="@style/AppTheme.AppWidgetContainer">
 
-    <TextView
-        android:id="@+id/appwidget_text"
-        style="@style/Widget.Timer.AppWidget.InnerView"
-        android:layout_width="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="20dp"
+    android:background="@drawable/parent_background"
+    android:gravity="center">
+
+    <!-- Day Progress Card -->
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
-</RelativeLayout>
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@drawable/child_background"
+        android:gravity="center"
+        android:layout_marginEnd="10dp">
+
+        <!-- Circular Progress Bar -->
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+            <ProgressBar
+                android:id="@+id/day_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:max="100"
+                android:indeterminate="false"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+            <!-- Label and Percentage in the Center -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/day_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Day"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#999999" />
+
+                <TextView
+                    android:id="@+id/day_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="46.90%"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#fff" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Remaining Time -->
+        <TextView
+            android:id="@+id/day_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Remaining 12 hours"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <!-- Repeat for Month Progress Card -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@drawable/child_background"
+        android:gravity="center"
+        android:layout_marginEnd="10dp">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+            <ProgressBar
+                android:id="@+id/month_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:max="100"
+                android:indeterminate="false"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/month_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#999999" />
+
+                <TextView
+                    android:id="@+id/month_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="76.22%"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#fff" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/month_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Remaining 16 days"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <!-- Repeat for Year Progress Card -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@drawable/child_background"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+            <ProgressBar
+                android:id="@+id/year_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:max="100"
+                android:indeterminate="false"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/year_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Year"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#999999" />
+
+                <TextView
+                    android:id="@+id/year_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="33.58%"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#fff" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/year_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Remaining 200 days"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+</LinearLayout>
