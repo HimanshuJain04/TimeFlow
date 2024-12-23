@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet, View, ScrollView} from 'react-native';
+import { StyleSheet, ScrollView} from 'react-native';
 import {RenderProgressBar} from './components';
 
 type ProgressState = {
